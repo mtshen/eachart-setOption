@@ -1,38 +1,38 @@
 /*
-    setoption º¯Êı½ÓÊÜ3¸öÖµ
-    1. eChart Ô­Ê¼µÄ echarts ¶ÔÏó,Èç¹ûÊÇdom¶ÔÏóÔò»á½«Æä×ª»»³É echarts
-    2. option ¸üĞÂµÄÅäÖÃÎÄ¼ş,Ö»½ÓÊÜ echarts ÅäÖÃÏî
-    3. config º¯ÊıÉèÖÃ, ¿ÉÒÔ¶îÍâÉèÖÃÒ»Ğ©¹¦ÄÜ
-    ´æ´¢Êı¾İ, ĞèÒª´æ´¢ eachart¶ÔÏó,colorÊı×é,legendÊı×é,option,config,element,legendDom
-        config ²ÎÊı
-        - color     colorÊı×é ÄÜ¹»×Ô¶¯»ñÈ¡
-        - legend    legendµÄdata²ÎÊı   ÄÜ¹»×Ô¶¯»ñÈ¡
-        - type      ¿ÉÒÔÊÖ¶¯ÉèÖÃÍ¼±íµÄÀàĞÍ ÄÜ¹»×Ô¶¯»ñÈ¡
-        - nostack   ¿ÉÒÔÉèÖÃÊÇ·ñÓĞstackÊôĞÔ,¸Ã²ÎÊı¶ÔbarĞÍÍ¼ÀıÖÁ¹ØÖØÒª ÄÜ¹»×Ô¶¯»ñÈ¡
-        - lineNum   ÉèÖÃÃ¿ĞĞÏÔÊ¾µÄÊıÁ¿,Ä¬ÈÏÎª 12
-        - append    ÊÇ·ñÎª×·¼ÓÄÚÈİ,Ïàµ±ÓÚecharts.setOption µÄµÚ¶ş¸ö²ÎÊı
-        - width     ÉèÖÃ¿í¶È Ä¬ÈÏ 100px
-        - switchFreely ÊÇ·ñ×Ô¶¯ÇĞ»»µ½ÉÏ²à»ò×ó²à Ä¬ÈÏ true
+    setoption å‡½æ•°æ¥å—3ä¸ªå€¼
+    1. eChart åŸå§‹çš„ echarts å¯¹è±¡,å¦‚æœæ˜¯domå¯¹è±¡åˆ™ä¼šå°†å…¶è½¬æ¢æˆ echarts
+    2. option æ›´æ–°çš„é…ç½®æ–‡ä»¶,åªæ¥å— echarts é…ç½®é¡¹
+    3. config å‡½æ•°è®¾ç½®, å¯ä»¥é¢å¤–è®¾ç½®ä¸€äº›åŠŸèƒ½
+    å­˜å‚¨æ•°æ®, éœ€è¦å­˜å‚¨ eachartå¯¹è±¡,coloræ•°ç»„,legendæ•°ç»„,option,config,element,legendDom
+        config å‚æ•°
+        - color     coloræ•°ç»„ èƒ½å¤Ÿè‡ªåŠ¨è·å–
+        - legend    legendçš„dataå‚æ•°   èƒ½å¤Ÿè‡ªåŠ¨è·å–
+        - type      å¯ä»¥æ‰‹åŠ¨è®¾ç½®å›¾è¡¨çš„ç±»å‹ èƒ½å¤Ÿè‡ªåŠ¨è·å–
+        - nostack   å¯ä»¥è®¾ç½®æ˜¯å¦æœ‰stackå±æ€§,è¯¥å‚æ•°å¯¹barå‹å›¾ä¾‹è‡³å…³é‡è¦ èƒ½å¤Ÿè‡ªåŠ¨è·å–
+        - lineNum   è®¾ç½®æ¯è¡Œæ˜¾ç¤ºçš„æ•°é‡,é»˜è®¤ä¸º 12
+        - append    æ˜¯å¦ä¸ºè¿½åŠ å†…å®¹,ç›¸å½“äºecharts.setOption çš„ç¬¬äºŒä¸ªå‚æ•°
+        - width     è®¾ç½®å®½åº¦ é»˜è®¤ 100px
+        - switchFreely æ˜¯å¦è‡ªåŠ¨åˆ‡æ¢åˆ°ä¸Šä¾§æˆ–å·¦ä¾§ é»˜è®¤ true
         - title     { auto | none | show | function }
-                    auto : ×Ô¶¯¼ì²éÎÄ×Ö³¤¶È,×ö³öÌáÊ¾ (Ä¬ÈÏ)
-                    none : ²»ÌáÊ¾
-                    show : Ê¼ÖÕÌáÊ¾
-                    function : functionµÄ·µ»ØÖµÈç¹ûÎª¿ÕÔò²»ÌáÊ¾,Èç¹û·µ»Ødom»òÎÄ±¾,ÔòÌáÊ¾
- */
+                    auto : è‡ªåŠ¨æ£€æŸ¥æ–‡å­—é•¿åº¦,åšå‡ºæç¤º (é»˜è®¤)
+                    none : ä¸æç¤º
+                    show : å§‹ç»ˆæç¤º
+                    function : functionçš„è¿”å›å€¼å¦‚æœä¸ºç©ºåˆ™ä¸æç¤º,å¦‚æœè¿”å›domæˆ–æ–‡æœ¬,åˆ™æç¤º
+*/
 var $setOption = (function ($, echarts) {
-    // ¼ì²éecharts
+    // æ£€æŸ¥echarts
     if (!($ + echarts)) return !console.info('%c without introducing echarts or jQuery!', 'color:#eb4f38;');
 
     /*
-        ´æ´¢Êı¾İËµÃ÷
-            eChart : ´æ´¢µÄeachart¶ÔÏó
-            color : ´æ´¢µÄcolorÊı×é
-            legend : ´æ´¢µÄlegendÊı×é
-            option : eachartµÄoption²ÎÊı(»á¸Ä±ä)
-            config : ´«Èë²ÎÊı
-            element : eachart¶ÔÏó¶ÔÓ¦ÔªËØ
-            __option : Ô­Ê¼eacharts²ÎÊı
-            legendDom : Í¼ÀıÔªËØ
+        å­˜å‚¨æ•°æ®è¯´æ˜
+            eChart : å­˜å‚¨çš„eachartå¯¹è±¡
+            color : å­˜å‚¨çš„coloræ•°ç»„
+            legend : å­˜å‚¨çš„legendæ•°ç»„
+            option : eachartçš„optionå‚æ•°(ä¼šæ”¹å˜)
+            config : ä¼ å…¥å‚æ•°
+            element : eachartå¯¹è±¡å¯¹åº”å…ƒç´ 
+            __option : åŸå§‹eachartså‚æ•°
+            legendDom : å›¾ä¾‹å…ƒç´ 
     */
     var setOptFn = {
         chart: [{
@@ -53,7 +53,7 @@ var $setOption = (function ($, echarts) {
             type: 'all',
             fn: function (obj) {
                 obj.option.legend.top = '-1000%';
-                // 	grid ²ÎÊıÉèÖÃ
+                // 	grid å‚æ•°è®¾ç½®
                 if (obj.option.grid) {
                     obj.option.grid.show = false;
                     obj.option.grid.right = obj.config.width;
@@ -67,16 +67,16 @@ var $setOption = (function ($, echarts) {
         }]
     };
 
-    // ¹ú¼Ê¹ßÀı,ÉèÖÃ´æ´¢²ÎÊı
+    // å›½é™…æƒ¯ä¾‹,è®¾ç½®å­˜å‚¨å‚æ•°
     var data = [];
-    // »ñÈ¡²ÎÊı getData(dom)[0].option
+    // è·å–å‚æ•° getData(dom)[0].option
     function getData(elem) {
         for (var i = 0, len = data.length; i < len; i++) {
             if (data[i].elem === elem) return [data[i], i];
         }
         return null;
     };
-    // ÉèÖÃ²ÎÊı
+    // è®¾ç½®å‚æ•°
     function setData(elem, opt) {
         var _rtn = getData(elem);
         if (!_rtn) {
@@ -92,26 +92,26 @@ var $setOption = (function ($, echarts) {
         };
     };
 
-    // ³õÊ¼»¯ÅäÖÃÎÄ¼ş
+    // åˆå§‹åŒ–é…ç½®æ–‡ä»¶
     function initConf(_option, _conf) {
         var conf = $.extend(true, {}, _conf),
             option = $.extend(true, {}, _option);
 
-        // È¡type
+        // å–type
         if (!conf.type)
             conf.type =
                 option.series && option.series[0] && option.series[0].type
                     ? option.series[0].type
                     : 'scatter';
 
-        // È¡legend
+        // å–legend
         if (!conf.legend)
             conf.legend =
                 option.legend && option.legend.data
                     ? option.legend.data
                     : undefined;
 
-        // È¡color
+        // å–color
         if (!conf.color)
             conf.color =
                 option.color ? option.color :
@@ -122,13 +122,13 @@ var $setOption = (function ($, echarts) {
                         '#6699FF', '#ff6666', '#3cb371', '#b8860b', '#30e0e0'
                     ]
 
-        // È¡nostack
+        // å–nostack
         if (conf.nostack === undefined)
             conf.nostack =
                 option.series && option.series[0] && option.series[0].stack
                     ? false : true;
 
-        // ÆäËû
+        // å…¶ä»–
         conf.lineNum = conf.lineNum || 12;
         conf.append = !!conf.append;
         conf.width = parseInt(conf.width) || 100;
@@ -136,9 +136,9 @@ var $setOption = (function ($, echarts) {
             conf.switchFreely = true;
         return conf;
     };
-    // »æÖÆ´°¿Ú
+    // ç»˜åˆ¶çª—å£
     function drawLegend(dom) {
-        // »ñÈ¡²ÎÊı
+        // è·å–å‚æ•°
         var DATA = getData(dom)[0].option,
             LEGEND = DATA.config.legend,
             COLOR = DATA.config.color;
@@ -170,9 +170,9 @@ var $setOption = (function ($, echarts) {
         legendHtml += '</div>';
         DATA.legendDom.innerHTML = legendHtml;
     };
-    // bar ¼æÈİ
+    // bar å…¼å®¹
     function drawBarCharts(option) {
-        // È¡ËùÓĞ¿É»æÖÆÇø²ÎÊı
+        // å–æ‰€æœ‰å¯ç»˜åˆ¶åŒºå‚æ•°
         var legendDom = $(option.legendDom);
         var lines = legendDom.find('.echarts_legend_lines.on');
         var onarr = [];
@@ -182,7 +182,7 @@ var $setOption = (function ($, echarts) {
             onarr.push(this.getAttribute('data-text'));
         });
 
-        // ÖØĞÂ¸³Öµ²ÎÊı
+        // é‡æ–°èµ‹å€¼å‚æ•°
         var dataArr = [];
         $.each(option.__option.series[0].data, function () {
             onarr.indexOf(this.name) >= 0 && dataArr.push(this);
@@ -192,7 +192,7 @@ var $setOption = (function ($, echarts) {
         newData.series[0].data = dataArr;
         option.eChart.setOption(newData);
     };
-    // ¼ì²éÎÄ±¾ÊÇ·ñÒç³ö
+    // æ£€æŸ¥æ–‡æœ¬æ˜¯å¦æº¢å‡º
     function isEllipsis(dom) {
         var checkDom = dom.cloneNode(), parent, flag;
         checkDom.style.width = dom.offsetWidth + 'px';
@@ -210,7 +210,7 @@ var $setOption = (function ($, echarts) {
         parent.removeChild(checkDom);
         return flag;
     };
-    // ·­Ò³º¯Êıµ¥¶ÀÌá³ö
+    // ç¿»é¡µå‡½æ•°å•ç‹¬æå‡º
     function switchFreely() {
         var w = this.offsetWidth,
             h = this.offsetHeight;
@@ -220,11 +220,11 @@ var $setOption = (function ($, echarts) {
             config = DATA.config,
             line = config.lineNum,
             wid = config.width;
-        if (w < h) { // ×óÓÒ·­Ò³
+        if (w < h) { // å·¦å³ç¿»é¡µ
             var ww = parseInt(legendDom.parent().css('width'));
-            var l = line / parseInt(ww / wid); // ĞĞÊı
-            var h = (l + 1) * 20; // ¸ß¶È
-            var _w = line * wid / l; // ¿í¶È 
+            var l = line / parseInt(ww / wid); // è¡Œæ•°
+            var h = (l + 1) * 20; // é«˜åº¦
+            var _w = line * wid / l; // å®½åº¦ 
             legendDom.addClass('portrait').removeClass('transverse');
             legendDom.css({
                 width: _w,
@@ -236,7 +236,7 @@ var $setOption = (function ($, echarts) {
                     top: h + 5
                 }
             });
-        } else if (legendDom.hasClass('portrait')) { // ÉÏÏÂ·­Ò³
+        } else if (legendDom.hasClass('portrait')) { // ä¸Šä¸‹ç¿»é¡µ
             legendDom.addClass('transverse').removeClass('portrait');
             legendDom.css({
                 width: config.width,
@@ -252,11 +252,11 @@ var $setOption = (function ($, echarts) {
     }
 
 
-    // ÉèÖÃÊÂ¼ş
+    // è®¾ç½®äº‹ä»¶
     function onEvent(dom) {
         var DATA = getData(dom)[0].option,
             legendDom = DATA.legendDom;
-        $(legendDom).on('click', '.echarts_legend_lines', function (e) {    // Í¼Àı¿ª¹Ø
+        $(legendDom).on('click', '.echarts_legend_lines', function (e) {    // å›¾ä¾‹å¼€å…³
             var $this = $(this);
             var option = getData($this.parents('.echarts_legend_main').parents()[1])[0].option;
             var flag = option.config.nostack && option.config.type === 'bar';
@@ -271,10 +271,10 @@ var $setOption = (function ($, echarts) {
             }
             flag ? drawBarCharts(option) : DATA.eChart.dispatchAction({
                 type: 'legendToggleSelect',
-                // Í¼ÀıÃû³Æ
+                // å›¾ä¾‹åç§°
                 name: $this.attr('data-text')
             });
-        }).on('mouseenter', '.echarts_legend_lines', function () {  // Í¼Àı¸ßÁÁ
+        }).on('mouseenter', '.echarts_legend_lines', function () {  // å›¾ä¾‹é«˜äº®
             var $this = $(this);
             var option = getData($this.parents('.echarts_legend_main').parents()[1])[0].option;
             var flag = option.config.nostack && option.config.type === 'bar';
@@ -290,20 +290,20 @@ var $setOption = (function ($, echarts) {
             }
             DATA.eChart.dispatchAction({
                 type: 'highlight',
-                // Í¼ÀıÃû³Æ
+                // å›¾ä¾‹åç§°
                 seriesName: $this.attr('data-text')
             })
-        }).on('mouseleave', '.echarts_legend_lines', function () {  // Í¼Àı¸ßÁÁ
+        }).on('mouseleave', '.echarts_legend_lines', function () {  // å›¾ä¾‹é«˜äº®
             var $this = $(this);
             var option = getData($this.parents('.echarts_legend_main').parents()[1])[0].option;
             var flag = option.config.nostack && option.config.type === 'bar';
             $this.find('.echarts_legend_title').remove();
             DATA.eChart.dispatchAction({
                 type: 'downplay',
-                // Í¼ÀıÃû³Æ
+                // å›¾ä¾‹åç§°
                 seriesName: $this.attr('data-text')
             })
-        }).on('click', '.echarts_legend_right', function () {  // ×ó·­Ò³
+        }).on('click', '.echarts_legend_right', function () {  // å·¦ç¿»é¡µ
             var $this = $(this);
             var $par = $this.parents('.echarts_legend');
             var data_index = parseInt($par.attr('data-index'));
@@ -320,7 +320,7 @@ var $setOption = (function ($, echarts) {
                     }).find('.echarts_legend_right').removeClass('off');
                     break;
             }
-        }).on('click', '.echarts_legend_left', function () {  // ÓÒ·­Ò³
+        }).on('click', '.echarts_legend_left', function () {  // å³ç¿»é¡µ
             var $this = $(this);
             var $par = $this.parents('.echarts_legend');
             var data_index = parseInt($par.attr('data-index'));
@@ -342,21 +342,21 @@ var $setOption = (function ($, echarts) {
         DATA.config.switchFreely && addresize(DATA.element, switchFreely);
     };
 
-    // ³õÊ¼»¯»ò¸üĞÂ´úÂë
+    // åˆå§‹åŒ–æˆ–æ›´æ–°ä»£ç 
     function init(eChart, option, config) {
-        config = initConf(option, config || {}); // ³õÊ¼»¯ÅäÖÃ
+        config = initConf(option, config || {}); // åˆå§‹åŒ–é…ç½®
 
-        // ·ÅÆúÌõ¼ş
+        // æ”¾å¼ƒæ¡ä»¶
         if (!config.type || !config.color || !config.legend) return false;
         var dom = eChart.getDom(), fn;
 
         /* 
-            1. ²é¿´ config ÖĞµÄtype,Èç¹ûÎªbar ÔòÎª legend ¶îÍâ½øĞĞÓÅ»¯
-            2. äÖÈ¾ echarts
-            3. ¼ÇÂ¼Êı¾İ 
-            4. äÖÈ¾
+            1. æŸ¥çœ‹ config ä¸­çš„type,å¦‚æœä¸ºbar åˆ™ä¸º legend é¢å¤–è¿›è¡Œä¼˜åŒ–
+            2. æ¸²æŸ“ echarts
+            3. è®°å½•æ•°æ® 
+            4. æ¸²æŸ“
         */
-        $.each(setOptFn.chart, function () {   // 1. ¶îÍâµÄlegendÓÅ»¯
+        $.each(setOptFn.chart, function () {   // 1. é¢å¤–çš„legendä¼˜åŒ–
             if (this.type === config.type || this.type === 'all')
                 this.fn({
                     eChart: eChart,
@@ -365,8 +365,8 @@ var $setOption = (function ($, echarts) {
                 });
         });
 
-        eChart.setOption(option, config.append);  // 2. äÖÈ¾ echarts
-        setData(dom, { // 3. ¼ÇÂ¼Êı¾İ eachart¶ÔÏó,colorÊı×é,legendÊı×é,option,config,element,legendDom
+        eChart.setOption(option, config.append);  // 2. æ¸²æŸ“ echarts
+        setData(dom, { // 3. è®°å½•æ•°æ® eachartå¯¹è±¡,coloræ•°ç»„,legendæ•°ç»„,option,config,element,legendDom
             eChart: eChart,
             color: config.color,
             legend: config.legend,
@@ -377,16 +377,16 @@ var $setOption = (function ($, echarts) {
             legendDom: null
         });
 
-        // 4. äÖÈ¾
+        // 4. æ¸²æŸ“
         drawLegend(dom);
 
-        // 5. °ó¶¨ÊÂ¼ş
+        // 5. ç»‘å®šäº‹ä»¶
         onEvent(dom);
 
         config.switchFreely && switchFreely.call(dom);
         return eChart;
     };
-    // Ìí¼Óresize ÊÂ¼ş
+    // æ·»åŠ resize äº‹ä»¶
     function addresize(dom, fn) {
         var w = dom.offsetWidth,
             h = dom.offsetHeight,
@@ -410,15 +410,15 @@ var $setOption = (function ($, echarts) {
             }
         }
     }
-    // Èë¿ÚÎÄ¼ş
+    // å…¥å£æ–‡ä»¶
     function main(eChart, option, config) {
         /*
-            Îª delete ÔòÊÇÉ¾³ı
-            É¾³ı»òË¢ĞÂ»á·µ»Ø true »ò false
-            ³õÊ¼»¯»ò¸üĞÂ»á·µ»Ø echarts ¶ÔÏó
+            ä¸º delete åˆ™æ˜¯åˆ é™¤
+            åˆ é™¤æˆ–åˆ·æ–°ä¼šè¿”å› true æˆ– false
+            åˆå§‹åŒ–æˆ–æ›´æ–°ä¼šè¿”å› echarts å¯¹è±¡
          */
         if (option === 'delete') {
-            // É¾³ıdom,½â³ıÔªËØÊÂ¼ş°ó¶¨,»¹Ô­³õÊ¼option
+            // åˆ é™¤dom,è§£é™¤å…ƒç´ äº‹ä»¶ç»‘å®š,è¿˜åŸåˆå§‹option
             $(eChart.getDom()).find('').remove();
             return true;
         }
@@ -430,7 +430,7 @@ var $setOption = (function ($, echarts) {
         }
     };
 
-    $.extend({ // °ó¶¨²å¼ş
+    $.extend({ // ç»‘å®šæ’ä»¶
         setOption: main
     });
 
