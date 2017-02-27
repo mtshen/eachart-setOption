@@ -13,12 +13,13 @@
         - append    是否为追加内容,相当于echarts.setOption 的第二个参数
         - width     设置宽度 默认 100px
         - switchFreely 是否自动切换到上侧或左侧 默认 true
+        - page      设置是否显示翻页 默认 'auto' 显示, hide 不显示,show 始终显示
         - title     { auto | none | show | function }
                     auto : 自动检查文字长度,做出提示 (默认)
                     none : 不提示
                     show : 始终提示
                     function : function的返回值如果为空则不提示,如果返回dom或文本,则提示
-*/
+ */
 var $setOption = (function ($, echarts) {
     // 检查echarts
     if (!($ + echarts)) return !console.info('%c without introducing echarts or jQuery!', 'color:#eb4f38;');
@@ -34,6 +35,7 @@ var $setOption = (function ($, echarts) {
             __option : 原始eacharts参数
             legendDom : 图例元素
     */
+
     var setOptFn = {
         chart: [{
             type: 'bar',
@@ -53,16 +55,6 @@ var $setOption = (function ($, echarts) {
             type: 'all',
             fn: function (obj) {
                 obj.option.legend.top = '-1000%';
-                // 	grid 参数设置
-                if (obj.option.grid) {
-                    obj.option.grid.show = false;
-                    obj.option.grid.right = obj.config.width;
-                } else {
-                    obj.option.grid = {
-                        show: false,
-                        right: obj.config.width
-                    }
-                }
             }
         }]
     };
@@ -96,7 +88,6 @@ var $setOption = (function ($, echarts) {
     function initConf(_option, _conf) {
         var conf = $.extend(true, {}, _conf),
             option = $.extend(true, {}, _option);
-
         // 取type
         if (!conf.type)
             conf.type =
@@ -125,13 +116,14 @@ var $setOption = (function ($, echarts) {
         // 取nostack
         if (conf.nostack === undefined)
             conf.nostack =
-                option.series && option.series[0] && option.series[0].stack
+                option.series && option.series[0] && option.series[0].stack && option.series[0].stack != '$$setOption_m000001$$'
                     ? false : true;
 
         // 其他
         conf.lineNum = conf.lineNum || 12;
         conf.append = !!conf.append;
         conf.width = parseInt(conf.width) || 100;
+        conf.page = conf.page || 'auto';
         if (conf.switchFreely === undefined)
             conf.switchFreely = true;
         return conf;
@@ -145,8 +137,8 @@ var $setOption = (function ($, echarts) {
         var clength = COLOR.length;
         var lineNum = DATA.config.lineNum;
         var w = DATA.config.width;
-        DATA.legendDom = $(DATA.element).children().eq(0).
-            append('<div class="echarts_legend_main"></div>').children('.echarts_legend_main')[0];
+        DATA.legendDom = $(DATA.element).
+            append('<div class="echarts_legend_main portrait delay-show"></div>').children('.echarts_legend_main')[0];
         $(DATA.legendDom).css('width', w);
         var legendInt = Math.ceil(LEGEND.length / DATA.config.lineNum),
             l_Percentage = 100 / legendInt,
@@ -156,19 +148,27 @@ var $setOption = (function ($, echarts) {
             legendHtml += '<ul class="echarts_legend_line clear-fix" style="width : ' + l_Percentage + '%;">'
             for (var n = 0, m = lineNum; n < m; n++) {
                 var index = i * lineNum + n;
-                if (LEGEND[index]) {
+                if (LEGEND[index] !== undefined) {
                     var c = COLOR[index % clength], t = LEGEND[index];
-                    legendHtml += '<li class="echarts_legend_lines on" data-color="' + c + '" data-text="' + t + '" data-index="' + index + '">' +
+                    legendHtml += '<li class="echarts_legend_lines on" data-color="' + c + '" data-index="' + index + '">' +
                         '<i class="echarts_legend_icon" style="background:' + c + '"></i>' +
-                        '<span class="echarts_legend_text" style="color:' + c + ';width:' + _w + 'px">' + t + '</span></li>'
+                        '<span class="echarts_legend_text" style="width:' + _w + 'px">' + t + '</span></li>'
                 } else {
                     break;
                 }
             }
-            legendHtml += '<li class="echarts_legend_left glyphicon glyphicon-chevron-left ' + (i === 0 ? 'echarts_legend_dis' : '') + '"></li><li class="echarts_legend_right glyphicon glyphicon-chevron-right ' + (i === legendInt - 1 ? 'echarts_legend_dis' : '') + '"></li></ul>'
+            legendHtml += '</ul>'
         }
         legendHtml += '</div>';
+        if (lineNum < LEGEND.length) {
+            legendHtml += '<div class="echarts_legend_page" style="left:50%"><div class="echarts_legend_left glyphicon glyphicon-chevron-left off"></div><div class="echarts_legend_right glyphicon glyphicon-chevron-right"></div></div>';
+        }
         DATA.legendDom.innerHTML = legendHtml;
+        $(DATA.legendDom).find('.echarts_legend_lines').each(function () {
+            var $this = $(this);
+            $this.attr('data-text', $this.find('.echarts_legend_text').text());
+
+        });
     };
     // bar 兼容
     function drawBarCharts(option) {
@@ -177,7 +177,7 @@ var $setOption = (function ($, echarts) {
         var lines = legendDom.find('.echarts_legend_lines.on');
         var onarr = [];
         var newData = $.extend(true, {}, option.__option);
-        
+
         lines.each(function () {
             onarr.push(this.getAttribute('data-text'));
         });
@@ -185,7 +185,11 @@ var $setOption = (function ($, echarts) {
         // 重新赋值参数
         var dataArr = [];
         $.each(option.__option.series[0].data, function () {
-            onarr.indexOf(this.name) >= 0 && dataArr.push(this);
+            var data_push_i = $.extend(true, {}, this);
+            if (onarr.indexOf(this.name) === -1) {
+                data_push_i.value = 0;
+            }
+            dataArr.push(data_push_i);
         });
 
         delete newData.grid;
@@ -226,39 +230,49 @@ var $setOption = (function ($, echarts) {
             var h = (l + 1) * 20; // 高度
             var _w = line * wid / l; // 宽度 
             legendDom.addClass('portrait').removeClass('transverse');
-            legendDom.css({
+            $(eChart.getDom()).css({
+                paddingRight: 0,
+                paddingTop: h + 5
+            });
+            var d = legendDom.css({
                 width: _w,
                 height: h
-            });
-            eChart.setOption({
-                grid: {
-                    right: 20,
-                    top: h + 5
-                }
-            });
+            }).find('.echarts_legend');
+
+            var index = d.attr('data-index');
+            d.css({ left: -(index - 1) * 400 });;
+
         } else if (legendDom.hasClass('portrait')) { // 上下翻页
             legendDom.addClass('transverse').removeClass('portrait');
-            legendDom.css({
+            $(eChart.getDom()).css({
+                paddingRight: config.width + 10,
+                paddingTop: 0
+            });
+            var d = legendDom.css({
                 width: config.width,
                 height: 'auto'
-            });
-            eChart.setOption({
-                grid: {
-                    right: config.width + 10,
-                    top: 20
-                }
-            });
+            }).find('.echarts_legend');
+            var index = d.attr('data-index');
+            d.css({ left: -(index - 1) * 100 });
+            eChart.resize();
         }
     }
-
 
     // 设置事件
     function onEvent(dom) {
         var DATA = getData(dom)[0].option,
             legendDom = DATA.legendDom;
+
+        $(legendDom).off('click', '.echarts_legend_lines')
+            .off('mouseenter', '.echarts_legend_lines')
+            .off('mouseleave', '.echarts_legend_lines')
+            .off('click', '.echarts_legend_right')
+            .off('click', '.echarts_legend_left')
+            .off('mouseenter', '.echarts_legend_title');
+
         $(legendDom).on('click', '.echarts_legend_lines', function (e) {    // 图例开关
             var $this = $(this);
-            var option = getData($this.parents('.echarts_legend_main').parents()[1])[0].option;
+            var option = getData($this.parents('.echarts_legend_main').parents()[0])[0].option;
             var flag = option.config.nostack && option.config.type === 'bar';
             if ($this.hasClass('on')) {
                 $this.removeClass('on').addClass('off');
@@ -267,62 +281,53 @@ var $setOption = (function ($, echarts) {
             } else {
                 $this.removeClass('off').addClass('on');
                 $this.children('.echarts_legend_icon').css('background', $this.attr('data-color'));
-                $this.children('.echarts_legend_text').css('color', $this.attr('data-color'));
+                // $this.children('.echarts_legend_text').css('color', $this.attr('data-color'));
+                $this.children('.echarts_legend_text').css('color', '#000');
             }
             flag ? drawBarCharts(option) : DATA.eChart.dispatchAction({
                 type: 'legendToggleSelect',
                 // 图例名称
-                name: $this.attr('data-text')
+                name: option.config.legend[$this.attr('data-index')]
             });
         }).on('mouseenter', '.echarts_legend_lines', function () {  // 图例高亮
             var $this = $(this);
-            var option = getData($this.parents('.echarts_legend_main').parents()[1])[0].option;
-            var flag = option.config.nostack && option.config.type === 'bar';
 
             var tdom = $this.find('.echarts_legend_text');
             var text = tdom.text();
 
             if (isEllipsis(tdom[0])) {
                 $this.append('<span class="echarts_legend_title">' + text + '</span>');
-                // $this.children('.echarts_legend_title').css({
-                //     color: $this.attr('data-color')
-                // });
+                $this.children('.echarts_legend_title').css({
+                    color: '#000',
+                    right: 0
+                });
             }
-            DATA.eChart.dispatchAction({
-                type: 'highlight',
-                // 图例名称
-                seriesName: $this.attr('data-text')
-            })
         }).on('mouseleave', '.echarts_legend_lines', function () {  // 图例高亮
-            var $this = $(this);
-            var option = getData($this.parents('.echarts_legend_main').parents()[1])[0].option;
-            var flag = option.config.nostack && option.config.type === 'bar';
-            $this.find('.echarts_legend_title').remove();
-            DATA.eChart.dispatchAction({
-                type: 'downplay',
-                // 图例名称
-                seriesName: $this.attr('data-text')
-            })
+            $('.echarts_legend_title').remove();
         }).on('click', '.echarts_legend_right', function () {  // 左翻页
             var $this = $(this);
-            var $par = $this.parents('.echarts_legend');
+            var $par = $this.parents('.echarts_legend_page').prevAll('.echarts_legend');
             var data_index = parseInt($par.attr('data-index'));
             var index = data_index - parseInt($par.attr('data-max'));
             switch (index) {
                 case 0:
                     break;
-                case 1:
+                case -1:
                     $this.addClass('off');
                 default:
                     data_index++;
                     $par.attr('data-index', data_index).css({
-                        left: -(data_index - 1) * parseInt($this.parent().css('width'))
-                    }).find('.echarts_legend_right').removeClass('off');
+                        left: -(data_index - 1) * parseInt($par.children('.echarts_legend_line').css('width'))
+                    });
+                    $this.siblings('.echarts_legend_left').removeClass('off');
+                    var _triger = $par.children('.echarts_legend_line').eq(data_index - 1);
+                    var _pw = parseFloat($par.css('height'));
+                    // $this.parent().css('bottom', _pw - parseFloat(_triger.css('height')));
                     break;
             }
         }).on('click', '.echarts_legend_left', function () {  // 右翻页
             var $this = $(this);
-            var $par = $this.parents('.echarts_legend');
+            var $par = $this.parents('.echarts_legend_page').prevAll('.echarts_legend');
             var data_index = parseInt($par.attr('data-index'));
             switch (data_index) {
                 case 1:
@@ -332,12 +337,16 @@ var $setOption = (function ($, echarts) {
                 default:
                     data_index--;
                     $par.attr('data-index', data_index).css({
-                        left: -(data_index - 1) * parseInt($this.parent().css('width'))
-                    }).find('.echarts_legend_left').removeClass('off');
+                        left: -(data_index - 1) * parseInt($par.children('.echarts_legend_line').css('width'))
+                    });
+                    $this.siblings('.echarts_legend_right').removeClass('off');
+                    var _triger = $par.children('.echarts_legend_line').eq(data_index - 1);
+                    var _pw = parseFloat($par.css('height'));
+                    // $this.parent().css('bottom', _pw - parseFloat(_triger.css('height')));
                     break;
             }
         }).on('mouseenter', '.echarts_legend_title', function () {
-            $(this).remove();
+            $('.echarts_legend_title').remove();
         });
         DATA.config.switchFreely && addresize(DATA.element, switchFreely);
     };
@@ -345,7 +354,7 @@ var $setOption = (function ($, echarts) {
     // 初始化或更新代码
     function init(eChart, option, config) {
         config = initConf(option, config || {}); // 初始化配置
-
+        config._startDate = +new Date;
         // 放弃条件
         if (!config.type || !config.color || !config.legend) return false;
         var dom = eChart.getDom(), fn;
@@ -364,7 +373,6 @@ var $setOption = (function ($, echarts) {
                     config: config
                 });
         });
-
         eChart.setOption(option, config.append);  // 2. 渲染 echarts
         setData(dom, { // 3. 记录数据 eachart对象,color数组,legend数组,option,config,element,legendDom
             eChart: eChart,
@@ -380,10 +388,14 @@ var $setOption = (function ($, echarts) {
         // 4. 渲染
         drawLegend(dom);
 
+        config._endDate = +new Date;
+
         // 5. 绑定事件
         onEvent(dom);
 
-        config.switchFreely && switchFreely.call(dom);
+        setTimeout(function () {
+            config.switchFreely && switchFreely.call(dom);
+        }, 1000);
         return eChart;
     };
     // 添加resize 事件
@@ -412,6 +424,7 @@ var $setOption = (function ($, echarts) {
     }
     // 入口文件
     function main(eChart, option, config) {
+        option.backgroundColor = "#FFF";
         /*
             为 delete 则是删除
             删除或刷新会返回 true 或 false
